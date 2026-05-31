@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 180" width="100%" height="100%">
+  <defs>
+    <!-- Styling for smooth, clean geometry rendering -->
+    <style>
+      .brand-color { fill: #503EFA; }
+    </style>
+  </defs>
+
+  <g transform="translate(10, 10)">
+    <!-- Lightning Bolt Icon -->
+    <path class="brand-color" d="M 75 10 L 5 95 L 85 95 L 30 165 L 110 80 L 30 80 Z" />
+
+    <!-- Text Group: "vybe" -->
+    <g transform="translate(145, 0)">
+      <!-- v -->
+      <path class="brand-color" d="M 5 45 L 30 120 L 55 120 L 80 45 L 56 45 L 43 97 L 29 45 Z" />
+      
+      <!-- y -->
+      <path class="brand-color" d="M 85 45 L 110 120 L 107 130 C 104 140 97 148 87 150 L 87 168 C 105 167 119 154 126 133 L 158 45 L 134 45 L 118 100 L 108 45 Z" />
+      
+      <!-- b -->
+      <path class="brand-color" d="M 168 10 M 168 45 L 168 120 L 190 120 L 190 106 C 196 116 207 122 220 122 C 242 122 258 104 258 83 C 258 62 242 43 220 43 C 207 43 196 49 190 59 L 190 10 Z M 190 83 C 190 71 199 62 212 62 C 225 62 234 71 234 83 C 234 95 225 104 212 104 C 199 104 190 95 190 83 Z" />
+      
+      <!-- e (Fixed, scaled, and completed) -->
+      <path class="brand-color" d="M 272 83 C 272 61 288 43 312 43 C 335 43 350 61 350 84 L 350 90 L 295 90 C 297 100 305 105 315 105 C 324 105 331 101 335 95 L 349 103 C 342 115 331 122 314 122 C 289 122 272 105 272 83 Z M 327 73 C 325 66 319 61 311 61 C 303 61 297 66 295 73 Z" />
+    </g>
+  </g>
+</svg>
