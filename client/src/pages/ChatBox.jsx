@@ -7,6 +7,7 @@ import {useAuth} from '@clerk/react'
 import api from "../api/axios";
 import { addMessage, fetchMessages, resetMessages } from "../features/messages/messagesSlice";
 import toast from "react-hot-toast";
+import moment from "moment";
 
 const ChatBox = () => {
   const {messages} = useSelector((state)=>state.messages)
@@ -74,6 +75,20 @@ const ChatBox = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const getDateLabel = (date) => {
+    const messageDate = moment(date);
+
+    if (messageDate.isSame(moment(), "day")) return "Today";
+    if (messageDate.isSame(moment().subtract(1, "day"), "day")) return "Yesterday";
+    if (moment().diff(messageDate, "days") < 7) return messageDate.format("dddd");
+
+    return messageDate.format("MMMM D, YYYY");
+  };
+
+  const sortedMessages = messages.toSorted(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+  );
+
   return (
     user && (
       <div className="flex flex-col h-screen">
@@ -90,21 +105,36 @@ const ChatBox = () => {
         </div>
         <div className="p-5 md:px-10 h-full overflow-y-scroll">
           <div className="space-y-4 max-w-4xl mx-auto">
-            {messages
-              .toSorted(
-                (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-              )
-              .map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex flex-col ${message.to_user_id !== user._id ? "items-start" : "items-end"}  `}
-                >
-                  <div className={`p-2 text-sm max-w-sm bg-white text-slate-700 rounded-lg shadow ${message.to_user_id !== user._id ? 'rounded-bl-none' : 'rounded-br-none'} `}>
-                    {message.message_type === 'image' && <img src={message.media_url} className="w-full max-w-sm rounded-lg mb-1" alt="" />  }
-                    <p>{message.text}</p>
+            {sortedMessages.map((message, index) => {
+              const showDateSeparator =
+                index === 0 ||
+                !moment(message.createdAt).isSame(sortedMessages[index - 1].createdAt, "day");
+
+              return (
+                <React.Fragment key={message._id || index}>
+                  {showDateSeparator && (
+                    <div className="flex items-center gap-3 py-1">
+                      <div className="h-px flex-1 bg-gray-200" />
+                      <span className="text-xs font-medium text-gray-400">
+                        {getDateLabel(message.createdAt)}
+                      </span>
+                      <div className="h-px flex-1 bg-gray-200" />
+                    </div>
+                  )}
+                  <div
+                    className={`flex flex-col ${message.to_user_id !== user._id ? "items-start" : "items-end"}  `}
+                  >
+                    <div className={`p-2 text-sm max-w-sm bg-white text-slate-700 rounded-lg shadow ${message.to_user_id !== user._id ? 'rounded-bl-none' : 'rounded-br-none'} `}>
+                      {message.message_type === 'image' && <img src={message.media_url} className="w-full max-w-sm rounded-lg mb-1" alt="" />  }
+                      <p>{message.text}</p>
+                      <p className="mt-1 text-[10px] leading-none text-gray-400 text-right">
+                        {moment(message.createdAt).format("LT")}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                </React.Fragment>
+              );
+            })}
               <div ref={messagesEndRef} />
           </div>
         </div>
